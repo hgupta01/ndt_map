@@ -33,10 +33,9 @@ class NDTCell():
         
         self.point_mean_ = np.mean(self.points, axis=0)
         diff = self.points - self.point_mean_
-        self.point_cov_ = (diff.T@diff)/(len(diff)-1)
-        if (np.linalg.det(self.point_cov_) < 0 or np.linalg.det(self.point_cov_)<1e-20):
+        self.point_cov_ = np.cov(diff.T)
+        if (np.linalg.det(self.point_cov_) < 0):
             return False
-
         try:
             icov = np.linalg.inv(self.point_cov_)
         except np.linalg.LinAlgError:
